@@ -1,6 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.schemas import Usuario, IdUsuario
 from datetime import datetime
+from app.db.database import obtener_bd
+from sqlalchemy.orm import Session
+from app.db import models
 
 router = APIRouter(
     prefix="/usuarios",
@@ -19,8 +22,10 @@ def ruta1():
     return {"mensaje": "Ruta de prueba en mi primera api"}
 
 @router.get("")
-def obtener_usuarios():
-    return usuarios
+def obtener_usuarios(db:Session = Depends(obtener_bd)):
+    datos = db.query(models.Usuario).all()
+    print(datos)
+    # return usuarios
 
 @router.post("")
 def crear_usuario(user:Usuario):

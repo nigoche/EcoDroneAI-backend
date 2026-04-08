@@ -9,6 +9,7 @@ class Usuario(BaseModel):  # Esquema de datos para un usuario
     apellido:str
     direccion:Optional[str] = None
     telefono:int
+    correo:str
     antiguedad:datetime = datetime.now()
 
 # Modelo para obtener el id del usuario

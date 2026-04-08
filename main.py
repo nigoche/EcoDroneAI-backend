@@ -1,6 +1,11 @@
 from fastapi import FastAPI         # Importa FastAPI para crear el api con FastAPI,
 import uvicorn                      # y uvicorn para correr el api en un servidor local
 from app.routers import user
+from app.db.database import Base, engine
+
+def crear_tablas():
+    Base.metadata.create_all(bind=engine)
+crear_tablas()
 
 app = FastAPI()
 app.include_router(user.router)

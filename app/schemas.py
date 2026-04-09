@@ -4,7 +4,8 @@ from datetime import datetime       # Importa la clase datetime para manejar fec
 
 # Modelo para un usuario    
 class Usuario(BaseModel):  # Esquema de datos para un usuario
-    id:int
+    username:str
+    password:str
     nombre:str
     apellido:str
     direccion:Optional[str] = None

@@ -28,9 +28,20 @@ def obtener_usuarios(db:Session = Depends(obtener_bd)):
     # return usuarios
 
 @router.post("")
-def crear_usuario(user:Usuario):
+def crear_usuario(user:Usuario, db:Session = Depends(obtener_bd)):
     usuario = user.model_dump()
-    usuarios.append(usuario)
+    nuevo_usuario = models.Usuario(
+        username = usuario["username"],
+        password = usuario["password"],
+        nombre = usuario["nombre"],
+        apellido = usuario["apellido"],
+        direccion = usuario["direccion"],
+        telefono = usuario["telefono"],
+        correo = usuario["correo"],
+    )
+    db.add(nuevo_usuario)
+    db.commit()
+    db.refresh(nuevo_usuario)
     return {"respuesta": "Usuario creado con éxito"}
 
 # Forma para obtener un usuario por id usando un path parameter

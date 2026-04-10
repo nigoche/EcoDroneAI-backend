@@ -1,31 +1,22 @@
 from fastapi import APIRouter, Depends
-from app.schemas import Usuario, IdUsuario
+from app.schemas import Usuario, IdUsuario, InfoUsuario
 from datetime import datetime
 from app.db.database import obtener_bd
 from sqlalchemy.orm import Session
 from app.db import models
+from typing import List
 
 router = APIRouter(
     prefix="/usuarios",
     tags=["Usuarios"],
 )
 
-# Lista de usuarios de prueba
-usuarios = [
-    {"id": 1, "nombre": "Juan", "apellido": "Perez", "direccion": "Calle equis", "telefono": 123456789, "antiguedad": datetime.now()},
-    {"id": 2, "nombre": "Pedro", "apellido": "Martínez", "direccion": "Otra calle", "telefono": 987654321, "antiguedad": datetime.now()},
-    {"id": 3, "nombre": "Carlos", "apellido": "González", "direccion": "Calle tal", "telefono": 555555555, "antiguedad": datetime.now()},
-]
+usuarios = []
 
-@router.get("/ruta1")
-def ruta1():
-    return {"mensaje": "Ruta de prueba en mi primera api"}
-
-@router.get("")
+@router.get("", response_model=List[InfoUsuario])
 def obtener_usuarios(db:Session = Depends(obtener_bd)):
-    datos = db.query(models.Usuario).all()
-    print(datos)
-    # return usuarios
+    lista_usuarios = db.query(models.Usuario).all()
+    return lista_usuarios
 
 @router.post("")
 def crear_usuario(user:Usuario, db:Session = Depends(obtener_bd)):
@@ -47,12 +38,12 @@ def crear_usuario(user:Usuario, db:Session = Depends(obtener_bd)):
 # Forma para obtener un usuario por id usando un path parameter
 # ------------------------------------------------------------------------------------------------
 # Esta forma funciona tanto con el método 'GET' como con el método 'POST'
-@router.get("/id/{id_usuario}")     # Endpoint corregido
-def obtener_usuario_por_id_en_url(id_usuario:int):
-    for usuario in usuarios:
-       if usuario["id"] == id_usuario:
-           return {"usuario": usuario}
-    return {"respuesta": "Usuario no encontrado"}
+@router.get("/id/{id_usuario}", response_model=InfoUsuario)
+def obtener_usuario_por_id_en_url(id_usuario:int, db:Session = Depends(obtener_bd)):
+    info_usuario = db.query(models.Usuario).filter(models.Usuario.id == id_usuario).first()
+    if not info_usuario:
+        return {"respuesta": "Usuario no encontrado"}
+    return info_usuario
 
 # Otra forma para obtener un usuario por id sin usar un path parameter, sino un body parameter
 # ------------------------------------------------------------------------------------------------

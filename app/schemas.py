@@ -16,3 +16,12 @@ class Usuario(BaseModel):  # Esquema de datos para un usuario
 # Modelo para obtener el id del usuario
 class IdUsuario(BaseModel):
     valor:int
+
+# Modelo para devolver información concreta de un usuario
+class InfoUsuario(BaseModel):
+    username:str
+    nombre:str
+    apellido:str
+    correo:str
+    class Config():
+        from_attributes = True

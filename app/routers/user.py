@@ -64,12 +64,17 @@ def obtener_usuario_por_id_en_json(id_usuario:IdUsuario):
     return {"respuesta": "Usuario no encontrado"}
 
 @router.delete("/id/{id_usuario}")
-def eliminar_usuario(id_usuario:int):
-    for i, usuario in enumerate(usuarios):
-        if usuario["id"] == id_usuario:
-            usuarios.pop(i)
-            return {"respuesta": "Usuario eliminado con éxito"}
-    return {"respuesta": "Usuario no encontrado"}
+def eliminar_usuario(id_usuario:int, db:Session = Depends(obtener_bd)):
+    usuario = db.query(models.Usuario).filter(models.Usuario.id == id_usuario)
+    if not usuario.first():
+        return {"respuesta": "Usuario no encontrado"}
+    usuario.delete(synchronize_session=False)
+    db.commit()
+    return {"respuesta": "Usuario eliminado con éxito"}
+    # for i, usuario in enumerate(usuarios):
+    #     if usuario["id"] == id_usuario:
+    #         usuarios.pop(i)
+    #         return {"respuesta": "Usuario eliminado con éxito"}
 
 @router.put("/id/{id_usuario}")
 def editar_nombre_de_usuario(id_usuario:int, nuevo_usuario:Usuario):

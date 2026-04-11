@@ -11,7 +11,7 @@ class Usuario(Base):
     password = Column(String(15), nullable=False)
     nombre = Column(String(15), nullable=False)
     apellido = Column(String(15), nullable=False)
-    direccion = Column(String(255), nullable=False)
+    direccion = Column(String(255))
     telefono = Column(String(10), nullable=False)
     correo = Column(String(127), nullable=False, unique=True)
     antiguedad = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)

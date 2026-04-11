@@ -13,9 +13,16 @@ class Usuario(BaseModel):  # Esquema de datos para un usuario
     correo:str
     antiguedad:datetime = datetime.now()
 
-# Modelo para obtener el id del usuario
-class IdUsuario(BaseModel):
-    valor:int
+# Modelo para actualizar la información de un usuario    
+class ActualizarUsuario(BaseModel):
+    username: str = None
+    password: str = None
+    nombre: str = None
+    apellido: str = None
+    direccion: str = None
+    telefono: int = None
+    correo: str = None
+    antiguedad: datetime = None
 
 # Modelo para devolver información concreta de un usuario
 class InfoUsuario(BaseModel):

@@ -17,10 +17,3 @@ class Usuario(Base):
     antiguedad = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
     estado = Column(Boolean, nullable=False, default=False)
     venta = relationship("Venta", backref="usuario", cascade="delete, merge")
-
-class Venta(Base):
-    __tablename__ = "venta"
-    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, unique=True)
-    id_usuario = Column(Integer, ForeignKey('usuario.id', ondelete='CASCADE'), nullable=False)
-    venta = Column(Integer, nullable=False)
-    ventas_productos = Column(Integer, nullable=False)

@@ -10,8 +10,6 @@ router = APIRouter(
     tags=["Usuarios"],
 )
 
-usuarios = []
-
 @router.get("", response_model=List[InfoUsuario])
 def obtener_usuarios(db:Session = Depends(obtener_bd)):
     lista_usuarios = db.query(models.Usuario).all()

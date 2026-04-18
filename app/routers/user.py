@@ -50,10 +50,6 @@ def eliminar_usuario(id_usuario:int, db:Session = Depends(obtener_bd)):
     usuario.delete(synchronize_session=False)
     db.commit()
     return {"respuesta": "Usuario eliminado con éxito"}
-    # for i, usuario in enumerate(usuarios):
-    #     if usuario["id"] == id_usuario:
-    #         usuarios.pop(i)
-    #         return {"respuesta": "Usuario eliminado con éxito"}
 
 @router.patch("/id/{id_usuario}")
 def editar_nombre_de_usuario(id_usuario:int, nuevos_datos:ActualizarUsuario, db:Session = Depends(obtener_bd)):

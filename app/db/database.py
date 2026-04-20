@@ -11,5 +11,5 @@ def obtener_bd():
     db = SessionLocal()
     try:
         yield db
-    except:
+    finally:
         db.close()

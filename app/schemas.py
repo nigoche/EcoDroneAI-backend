@@ -7,28 +7,36 @@ class Usuario(BaseModel):  # Esquema de datos para un usuario
     username:str
     password:str
     nombre:str
-    apellido:str
-    direccion:Optional[str] = None
     telefono:int
     correo:str
-    antiguedad:datetime = datetime.now()
 
 # Modelo para actualizar la información de un usuario    
 class ActualizarUsuario(BaseModel):
     username: str = None
     password: str = None
     nombre: str = None
-    apellido: str = None
-    direccion: str = None
     telefono: int = None
     correo: str = None
-    antiguedad: datetime = None
 
 # Modelo para devolver información concreta de un usuario
 class InfoUsuario(BaseModel):
     username:str
     nombre:str
-    apellido:str
+    telefono:int
     correo:str
     class Config():
         from_attributes = True
+
+# ---------------------------------------------------------------------------
+# Schemas de autenticación
+# ---------------------------------------------------------------------------
+
+# Credenciales que el cliente envía para iniciar sesión
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+# Respuesta que devuelve el servidor tras un login exitoso
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"

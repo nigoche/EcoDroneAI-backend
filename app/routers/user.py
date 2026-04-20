@@ -22,8 +22,6 @@ def crear_usuario(user:Usuario, db:Session = Depends(obtener_bd)):
         username = usuario["username"],
         password = usuario["password"],
         nombre = usuario["nombre"],
-        apellido = usuario["apellido"],
-        direccion = usuario["direccion"],
         telefono = usuario["telefono"],
         correo = usuario["correo"],
     )

@@ -1,42 +1,43 @@
-from pydantic import BaseModel      # Importa el modelo de pydantic
-from typing import Optional         # Importa el tipo de dato opcional
-from datetime import datetime       # Importa la clase datetime para manejar fechas y horas
+from pydantic import BaseModel
 
-# Modelo para un usuario    
-class Usuario(BaseModel):  # Esquema de datos para un usuario
-    username:str
-    password:str
-    nombre:str
-    telefono:int
-    correo:str
+# Esquemas de modelos
+# ---------------------------------------------------------------------------
 
-# Modelo para actualizar la información de un usuario    
+class Usuario(BaseModel):
+    """Esquema de datos esperado para la creación de un nuevo usuario."""
+    username: str
+    password: str
+    nombre: str
+    telefono: int
+    correo: str
+
 class ActualizarUsuario(BaseModel):
+    """Esquema de datos para la actualización parcial de la información de un usuario."""
     username: str = None
     password: str = None
     nombre: str = None
     telefono: int = None
     correo: str = None
 
-# Modelo para devolver información concreta de un usuario
 class InfoUsuario(BaseModel):
-    username:str
-    nombre:str
-    telefono:int
-    correo:str
+    """Esquema para devolver la información pública/básica de un usuario."""
+    username: str
+    nombre: str
+    telefono: int
+    correo: str
+
     class Config():
         from_attributes = True
 
-# ---------------------------------------------------------------------------
-# Schemas de autenticación
+# Esquemas de autenticación
 # ---------------------------------------------------------------------------
 
-# Credenciales que el cliente envía para iniciar sesión
 class LoginRequest(BaseModel):
+    """Credenciales enviadas por el cliente para iniciar sesión."""
     username: str
     password: str
 
-# Respuesta que devuelve el servidor tras un login exitoso
 class TokenResponse(BaseModel):
+    """Respuesta devuelta por el servidor tras una autenticación exitosa."""
     access_token: str
     token_type: str = "bearer"

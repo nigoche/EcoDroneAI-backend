@@ -26,9 +26,6 @@ def login(credenciales: LoginRequest, db: Session = Depends(obtener_bd)):
     - Si las credenciales son correctas devuelve un **JWT Bearer** válido por
       `{ACCESS_TOKEN_EXPIRE_MINUTES}` minutos
     - Si son incorrectas responde con **401 Unauthorized**
-
-    > ⚠️ Las contraseñas actualmente se almacenan en texto plano
-    > Cuando se migren a bcrypt, la verificación usará `verificar_password()` automáticamente
     """
     # Buscar al usuario en la BD
     usuario = (
@@ -37,13 +34,10 @@ def login(credenciales: LoginRequest, db: Session = Depends(obtener_bd)):
         .first()
     )
 
-    # Verificación de credenciales
-    # ── Contraseña en texto plano (estado actual de la BD) ──────────────────
-    credenciales_invalidas = not usuario or usuario.password != credenciales.password
-    # ── Descomentar las siguientes líneas cuando las contraseñas estén hasheadas:
-    # credenciales_invalidas = not usuario or not verificar_password(
-    #     credenciales.password, usuario.password
-    # )
+    # Verificación de credenciales con bcrypt (contraseñas hasheadas)
+    credenciales_invalidas = not usuario or not verificar_password(
+        credenciales.password, usuario.password
+    )
 
     if credenciales_invalidas:
         raise HTTPException(

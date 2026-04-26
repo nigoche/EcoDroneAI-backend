@@ -1,6 +1,7 @@
 import os
 from datetime import datetime, timedelta, timezone
 
+from dotenv import load_dotenv
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
@@ -9,10 +10,17 @@ from fastapi.security import OAuth2PasswordBearer
 # ---------------------------------------------------------------------------
 # Configuración
 # ---------------------------------------------------------------------------
-# En producción se debe cargar la SECRET_KEY desde una variable de entorno
-SECRET_KEY: str = os.getenv("SECRET_KEY", "cambiar_esta_clave_en_produccion")
+load_dotenv()
+
+SECRET_KEY: str = os.getenv("SECRET_KEY", "")
+if not SECRET_KEY:
+    raise RuntimeError(
+        "La variable de entorno SECRET_KEY no está definida. "
+        "Genera una con: python -c \"import secrets; print(secrets.token_hex(32))\""
+    )
+
 ALGORITHM: str = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 # ---------------------------------------------------------------------------
 # Hashing de contraseñas

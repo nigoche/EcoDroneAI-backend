@@ -1,12 +1,19 @@
 """
 Configuración de la conexión a la base de datos PostgreSQL utilizando SQLAlchemy.
 """
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 
-SQLALCHEMY_DATABASE_URL = "postgresql://jesusgn:4tac00s;@localhost:5432/fastapi_psql"
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+load_dotenv()
+
+SQLALCHEMY_DATABASE_URL: str = os.getenv("DATABASE_URL", "")
+if not SQLALCHEMY_DATABASE_URL:
+    raise RuntimeError("La variable de entorno DATABASE_URL no está definida.")
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

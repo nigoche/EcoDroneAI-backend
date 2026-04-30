@@ -39,8 +39,6 @@ def crear_usuario(
     nuevo_usuario = models.Usuario(
         username=usuario["username"],
         password=hashear_password(usuario["password"]),
-        nombre=usuario["nombre"],
-        telefono=usuario["telefono"],
         correo=usuario["correo"],
     )
     db.add(nuevo_usuario)

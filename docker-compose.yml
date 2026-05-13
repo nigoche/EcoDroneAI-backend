@@ -1,0 +1,14 @@
+# ─── EcoDroneAI Backend — Docker Compose (pruebas locales) ───────────────────
+# Uso: docker-compose up --build
+# Requiere un archivo .env con DATABASE_URL, SECRET_KEY, etc.
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: ecodrone-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: unless-stopped

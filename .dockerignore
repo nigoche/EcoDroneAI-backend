@@ -1,0 +1,11 @@
+# Excluye archivos innecesarios del contexto Docker
+.venv
+__pycache__
+*.pyc
+*.pyo
+.env
+.git
+.gitignore
+.vscode
+docs
+*.md

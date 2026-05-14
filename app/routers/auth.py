@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.database import obtener_bd
 from app.db import models
-from app.schemas import LoginRequest, TokenResponse
+from app.schemas import LoginRequest, TokenResponse, RecuperarPasswordRequest
 from app.core.security import (
     verificar_password,
     hashear_password,
@@ -65,4 +65,23 @@ def logout(usuario_actual: dict = Depends(obtener_usuario_actual)):
     return {
         "respuesta": f"Sesión de '{usuario_actual['username']}' cerrada con éxito",
         "instruccion": "Elimina el token de tu almacenamiento local",
+    }
+
+@router.post("/recuperar-password", summary="Recuperar contraseña (próximamente)")
+def recuperar_password(solicitud: RecuperarPasswordRequest):
+    """
+    **[DUMMY — En desarrollo]**
+
+    Endpoint de recuperación de contraseña por correo electrónico.
+    Actualmente siempre responde con 200 OK para establecer la comunicación
+    con el frontend. La funcionalidad real (envío de email con enlace de
+    restablecimiento) se implementará en una fase posterior.
+
+    > Requiere integración con un servicio de correo (SMTP / SendGrid / Resend).
+    """
+    return {
+        "respuesta": "Si el correo está registrado, recibirás un enlace de recuperación",
+        "correo": solicitud.correo,
+        "estado": "pendiente_implementacion",
+        "nota": "La funcionalidad de envío de email aún no está activa",
     }
